@@ -4,7 +4,7 @@
 Containerize ML Model for Deployment
 
 ## 2. Objective
-To learn how to put a simple ML model inside a Docker container.
+To learn how to package a simple ML model inside a Docker container.
 
 ## 3. Job Role
 DevOps Engineer and Machine Learning Engineer
@@ -13,18 +13,19 @@ DevOps Engineer and Machine Learning Engineer
 - Basic Python knowledge
 - Basic understanding of machine learning
 - Basic understanding of Docker containers
-- Ability to create files and run commands
+- Ability to create files and run terminal commands
 
 ## 5. Prerequisites
 - Docker Desktop installed
 - Python installed
-- VS Code or a text editor
-- Basic knowledge of command line
+- A text editor or VS Code
+- Basic command line skills
 
 ## 6. Theory
 - A container is a small package that holds code and its needed tools.
 - Docker is a tool that makes and runs containers.
 - Containerization is useful for ML models because the model can run the same way on many computers.
+- The Dockerfile describes how to build the container.
 
 ## 7. Project Structure
 
@@ -36,19 +37,43 @@ ml-container/
 
 ## 8. Implementation
 
-### Step 1: Install Docker Desktop
-- Download Docker Desktop from the Docker website.
-- Install it on your computer.
-- Start Docker Desktop.
+### Step 1: Create the project folder
+- Make a folder named `EX3`.
+- Inside `EX3`, create the required files.
 
-### Step 2: Open VS Code and create project folder
-- Open VS Code.
-- Create a folder named `EX3`.
-- Inside `EX3`, you will make the files.
+### Step 2: Create `ML.py`
+- Write a simple Python script that trains a model and prints accuracy.
+- Use the Iris dataset and `LogisticRegression`.
 
-### Step 3: Create ML.py file
-- Create a file named `ML.py`.
-- Put this code:
+### Step 3: Create `requirements.txt`
+- Add the dependency:
+
+```text
+scikit-learn
+```
+
+### Step 4: Create `Dockerfile`
+- Use a small Python base image.
+- Copy the code and requirements into the container.
+- Install dependencies.
+- Run the model script when the container starts.
+
+### Step 5: Build the Docker image
+- In the terminal, go to the `EX3` folder.
+- Run:
+
+```bash
+docker build -t ml-model-container .
+```
+
+### Step 6: Run the Docker container
+- Run:
+
+```bash
+docker run --rm ml-model-container
+```
+
+## 9. Code Example
 
 ```python
 from sklearn.datasets import load_iris
@@ -56,97 +81,61 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-# Load the iris dataset
 iris = load_iris()
 X = iris.data
 y = iris.target
 
-# Split data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
-# Create a simple logistic regression model
 model = LogisticRegression(max_iter=200)
 model.fit(X_train, y_train)
 
-# Predict and print accuracy
 predictions = model.predict(X_test)
 accuracy = accuracy_score(y_test, predictions)
 print("Model accuracy:", accuracy)
 ```
 
-### Step 4: Create requirements.txt
-- Create a file named `requirements.txt`.
-- Put this text:
+## 10. Dockerfile Explanation
+- `FROM python:3.10-slim`: Use a small Python image.
+- `WORKDIR /app`: Set the working directory inside the container.
+- `COPY requirements.txt .`: Copy the dependency file into the container.
+- `COPY ML.py .`: Copy the Python script into the container.
+- `RUN pip install --no-cache-dir -r requirements.txt`: Install packages.
+- `CMD ["python", "ML.py"]`: Run the script when the container starts.
 
-```text
-scikit-learn
-```
+## 11. Commands Section
 
-### Step 5: Create Dockerfile
-- Create a file named `Dockerfile`.
-- Put this code:
-
-```dockerfile
-# Use a small Python image
-FROM python:3.10-slim
-
-# Set the working folder inside the container
-WORKDIR /app
-
-# Copy files from our computer into the container
-COPY requirements.txt .
-COPY ML.py .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Run the Python file when the container starts
-CMD ["python", "ML.py"]
-```
-
-### Step 6: Build Docker image
-- In the terminal, run this command:
-
+Install dependencies locally (optional):
 ```bash
-cd "/Users/joeltharakan/Downloads/MLOPS LAB/EX3"
+python3 -m pip install -r requirements.txt
+```
+
+Build the Docker image:
+```bash
 docker build -t ml-model-container .
 ```
 
-### Step 7: Run Docker container
-- In the terminal, run this command:
-
+Run the Docker container:
 ```bash
 docker run --rm ml-model-container
 ```
 
-## 9. Explain Dockerfile Line-by-Line
-- `FROM`: Chooses the base Python image.
-- `WORKDIR`: Sets the folder inside the container.
-- `COPY`: Copies files from the project into the container.
-- `RUN`: Runs a command inside the container to install packages.
-- `CMD`: Says which command to run when the container starts.
+## 12. Output
+- The program prints the model accuracy.
+- The container starts, runs the code, and stops.
+- You should see one accuracy line in the terminal.
 
-## 10. Commands Section
+## 13. Advantages
+- The model runs the same way on any machine with Docker.
+- It keeps code and dependencies together.
+- It is easy to share and deploy.
 
-```bash
-docker build -t ml-model-container .
-```
-- Builds the Docker image and gives it the name `ml-model-container`.
+## 14. Exam Tips
+- Remember the Dockerfile steps: FROM, WORKDIR, COPY, RUN, CMD.
+- Know why containers are useful for ML.
+- Know the build command and run command.
 
-```bash
-docker run --rm ml-model-container
-```
-- Runs the container and removes it after it stops.
-
-## 11. Output / Result
-- The model runs successfully inside the container.
-- You should see the model accuracy printed.
-- The container runs and stops automatically after the program finishes.
-
-## 12. Advantages
-- Portability: The container can run on any computer with Docker.
-- Reproducibility: The same code and environment run every time.
-- Easy deployment: It is easy to move the container to another machine.
-
-## 13. Conclusion
-This lab shows how to package a simple ML model into a Docker container. It helps the model run in a clean and repeatable way.
+## 15. Conclusion
+This lab shows how to package a machine learning script in a Docker container. It makes the model easy to share and run consistently.

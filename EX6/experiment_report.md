@@ -11,7 +11,7 @@ MLOps Engineer and DevOps Engineer
 
 ## 4. Skills Required
 - Basic Python
-- Basic Flask web API
+- Basic Flask web API knowledge
 - Basic Docker knowledge
 - Understanding of ML model files
 
@@ -22,61 +22,63 @@ MLOps Engineer and DevOps Engineer
 - Basic understanding of machine learning
 
 ## 6. Theory
-- Continuous Deployment (CD) means automatically sending code and models to production.
-- CD is important for ML because it makes model updates easy and fast.
-- Docker is a tool that puts code and files into a small package called a container.
-- Model serving means running a model inside a web API so other programs can ask it for predictions.
+- Continuous Deployment (CD) means sending code and models to production automatically.
+- CD is important for ML because it makes model updates faster and safer.
+- Docker packages code and dependencies into a container.
+- Flask creates a small API that can serve model predictions.
+- This combination makes the model easy to deploy.
 
-## 7. Workflow Explanation
-- Prepare: save the model and give it a version name.
-- Build: create a Docker image with the app and the model.
-- Test & validate: check that the container works and the API responds.
-- Publish: upload the Docker image to a registry (optional concept).
-- Deploy: run the container so the app is live.
-- Monitor & rollback: watch the app and restart an older version if needed.
-
-## 8. Project Structure
+## 7. Project Structure
 
 ml-cd/
 │
 ├── serve.py
 ├── Dockerfile
 ├── requirements.txt
-└── iris.joblib (model file)
+└── iris.joblib
 
-## 9. Implementation
+## 8. Implementation
 
-### Step 1: Create folder
-- Create a folder named `EX6`.
+### Step 1: Create the project folder
+- Make a folder named `EX6`.
+- Add the required files inside it.
 
-### Step 2: Create files
-- Create `serve.py`, `Dockerfile`, `requirements.txt`, and `iris.joblib`.
-
-### Step 3: Train model (optional)
-- Train a simple model with the iris dataset.
-- Save the model to `iris.joblib`.
-
-### Step 4: Create Flask API
-- Use Flask to make a small web app.
-- Add `/health` and `/predict` endpoints.
+### Step 2: Create `serve.py`
 - Load the saved model with joblib.
+- Create a Flask app.
+- Add `/health` and `/predict` endpoints.
+- Return JSON responses.
 
-### Step 5: Create requirements.txt
-- Add Flask, scikit-learn, and joblib.
+### Step 3: Create `requirements.txt`
+- Add the package names:
 
-### Step 6: Create Dockerfile
-- Use `python:3.10-slim`.
-- Copy requirements and install them.
-- Copy the app and the model file.
-- Run the Flask server.
+```text
+flask
+scikit-learn
+joblib
+```
 
-### Step 7: Build Docker image
-- Use `docker build -t ml-cd-app .`
+### Step 4: Create `Dockerfile`
+- Use a Python base image.
+- Copy the requirements and install them.
+- Copy the code and model file.
+- Start the Flask server.
 
-### Step 8: Run container
-- Use `docker run -p 5000:5000 ml-cd-app`
+### Step 5: Build the Docker image
+- Run:
 
-## Code
+```bash
+docker build -t ml-cd-app .
+```
+
+### Step 6: Run the Docker container
+- Run:
+
+```bash
+docker run -p 5001:5001 ml-cd-app
+```
+
+## 9. Code Example
 
 ### serve.py
 ```python
@@ -88,17 +90,14 @@ model = joblib.load('iris.joblib')
 
 app = Flask(__name__)
 
-# Root endpoint
 @app.route('/')
 def home():
     return 'ML model server is running. Use /health or /predict.'
 
-# Health endpoint
 @app.route('/health')
 def health():
     return 'ok'
 
-# Predict endpoint
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
@@ -110,86 +109,66 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
 ```
 
-### requirements.txt
-```text
-flask
-scikit-learn
-joblib
-```
-
 ### Dockerfile
 ```dockerfile
-# Use a small Python image
 FROM python:3.10-slim
-
-# Set work directory inside the container
 WORKDIR /app
-
-# Copy dependency file and install packages
 COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-# Copy application files
+RUN pip install --no-cache-dir -r requirements.txt
 COPY serve.py .
 COPY iris.joblib .
-
-# Run the Flask server
 CMD ["python", "serve.py"]
 ```
 
 ## 10. Commands Section
 
-Install dependencies:
+Install dependencies locally:
 ```bash
 python3 -m pip install -r requirements.txt
 ```
-- This installs Flask, scikit-learn, and joblib.
 
 Run locally:
 ```bash
 python3 serve.py
 ```
-- This starts the Flask model server on port 5000.
 
-Build image:
+Build Docker image:
 ```bash
 docker build -t ml-cd-app .
 ```
-- This builds the Docker image and gives it the name `ml-cd-app`.
 
-Run container:
+Run Docker container:
 ```bash
 docker run -p 5001:5001 ml-cd-app
 ```
-- This runs the container and connects port 5000 inside the container to port 5000 on your machine.
 
 ## 11. Output
-- Server runs at `http://localhost:5001`.
-- `/health` returns `ok`.
-- `/predict` returns the model prediction.
+- Server runs at `http://127.0.0.1:5001`.
+- `http://127.0.0.1:5001/health` returns `ok`.
+- `http://127.0.0.1:5001/predict` returns predictions.
 
-### Test predict
-Use this command after the server is running:
+Example predict request:
 ```bash
 curl -X POST http://127.0.0.1:5001/predict \
   -H "Content-Type: application/json" \
   -d '{"features":[5.1,3.5,1.4,0.2]}'
 ```
 
-## 12. Answer Questions Clearly
+Expected response:
+```json
+{"prediction": 0}
+```
 
-- Prepare: save and version the model file.
-- Build: Docker creates a portable image.
-- Test & Gate: check the container and API before release.
-- Publish: push the image to a registry so others can use it.
-- Deploy: run the container in the target environment.
-- Monitor & Rollback: watch the app and restart an earlier image if needed.
+## 12. Advantages
+- Reproducible deployment
+- Easy to run on any machine with Docker
+- Simple API access to the model
+- Good for production use
 
-## 13. Advantages
-- Reproducibility
-- Easy deployment
-- Scalability
-- Consistency
+## 13. Exam Tips
+- Remember the Dockerfile steps: FROM, WORKDIR, COPY, RUN, CMD.
+- Know why the API has `/health` and `/predict`.
+- Know the commands to build and run the container.
 
 ## 14. Conclusion
-This lab shows how to deploy a machine learning model with Docker and Flask. It makes deployment simple, automated, and reliable.
+This lab shows how to deploy a machine learning model using Docker and Flask. It makes the model easy to run and share in a consistent environment.

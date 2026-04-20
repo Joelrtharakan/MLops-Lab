@@ -7,31 +7,40 @@ Monitoring and Logging in Machine Learning with Python
 Learn how to track a simple ML training loop using logging, TensorBoard, and Prometheus.
 
 ## 3. Job Role
-Machine Learning Engineer / Data Science student.
+Machine Learning Engineer / Data Science student
 
 ## 4. Skills Required
-- Basic Python: write and run a simple program.
-- Logging: save training messages to a file.
-- Monitoring: collect values to watch later.
-- TensorBoard: visualize loss and accuracy.
-- Prometheus: expose metrics through a web endpoint.
+- Basic Python: write and run a simple program
+- Logging: save training messages to a file
+- Monitoring: collect values and expose them
+- TensorBoard: view charts from logs
+- Prometheus: expose metrics through a web endpoint
 
 ## 5. Prerequisites
-- Python 3 installed.
-- A terminal or command line.
-- Basic understanding of running Python code.
+- Python 3 installed
+- A terminal or command line
+- Basic knowledge of running Python code
 
 ## 6. Theory
 - Logging is saving messages about how the program runs.
-- Monitoring is exposing values so we can watch them live.
-- Difference:
-  - Logging is like writing notes in a diary.
-  - Monitoring is like watching a clock or meter while the program runs.
+- Monitoring is making values available so they can be watched live.
+- Logging is like writing notes in a diary.
+- Monitoring is like watching a meter or dashboard.
+- TensorBoard can visualize loss and accuracy from log files.
+- Prometheus can expose numeric metrics at an HTTP address.
 
-## 7. Implementation
+## 7. Project Structure
+
+EX8/
+│
+├── app.py
+├── requirements.txt
+└── venv/
+
+## 8. Implementation
 
 ### Step 1: Install libraries
-Install the required libraries inside the `EX8` folder:
+In the `EX8` folder run:
 ```bash
 python3 -m venv venv
 ./venv/bin/python3 -m pip install --upgrade pip
@@ -39,44 +48,26 @@ python3 -m venv venv
 ```
 
 ### Step 2: Create logging system
-The code uses Python `logging` to save training messages in `ml.log`.
-It writes the epoch, loss, and accuracy values each step.
+- Use Python `logging` to write messages to `ml.log`.
+- The script logs epoch, loss, and accuracy values.
 
-### Step 3: Train a simple ML model
-The code simulates training for 5 epochs.
-This keeps the lab simple and fast.
+### Step 3: Create TensorBoard logs
+- Use TensorFlow summaries to write logs to `logs/`.
+- These logs can be viewed in TensorBoard.
 
-### Step 4: Log metrics (loss & accuracy)
-For each epoch the app logs:
-- epoch number
-- loss value
-- accuracy value
+### Step 4: Create Prometheus metrics
+- Use `prometheus_client` to start an HTTP metrics server.
+- Expose metrics like request count and accuracy.
 
-These values are also written to TensorBoard logs.
+### Step 5: Run the app
+- The app simulates 5 training epochs.
+- Each epoch updates the log file, TensorBoard logs, and Prometheus metrics.
 
-### Step 5: Use TensorBoard for visualization
-TensorBoard reads the `logs/` folder and shows charts.
-Use the browser at:
-```bash
-http://localhost:6006
-```
-
-### Step 6: Simple Prometheus monitoring
-The app starts a Prometheus endpoint at:
-```bash
-http://localhost:8000
-```
-It tracks:
-- request count
-- accuracy value
-
-## 8. Sample Code (FULL PROGRAM)
-Use the full code in `app.py`.
+## 9. Implementation Code
 
 ```python
 import logging
 import os
-import random
 import time
 from prometheus_client import start_http_server, Counter, Gauge
 import tensorflow as tf
@@ -88,7 +79,7 @@ logging.basicConfig(filename='ml.log', level=logging.INFO)
 os.makedirs('logs', exist_ok=True)
 writer = tf.summary.create_file_writer('logs')
 
-# Prometheus
+# Prometheus metrics
 req = Counter('requests', 'Total steps')
 acc_metric = Gauge('accuracy', 'Accuracy')
 
@@ -116,8 +107,9 @@ print('TensorBoard: http://localhost:6006 (run: tensorboard --logdir=logs)')
 train()
 ```
 
-## 9. Commands Section
-Install dependencies in the EX8 virtual environment:
+## 10. Commands Section
+
+Install dependencies:
 ```bash
 cd "/Users/joeltharakan/Downloads/MLOPS LAB/EX8"
 python3 -m venv venv
@@ -130,35 +122,38 @@ Run the app:
 ./venv/bin/python3 app.py
 ```
 
-Open TensorBoard in the browser:
+Open TensorBoard:
 ```bash
 http://localhost:6006
 ```
 
-If `pip` or `python` is not found, use `python3` or the virtual environment commands above.
+Open Prometheus metrics:
+```bash
+http://localhost:8000
+```
 
-## 10. Output
-Expected output:
+## 11. Output
 - A file named `ml.log` is created.
-- TensorBoard logs stored in `logs/`.
-- Prometheus metrics available at `http://localhost:8000`.
+- TensorBoard logs are written to `logs/`.
+- Prometheus metrics are available at `http://localhost:8000`.
+- The terminal prints epoch loss and accuracy values.
 
-## 11. Answer Questions Clearly
-**Q1: Logging script explanation**
-- The script runs 5 epochs.
-- Each epoch logs: epoch, loss, accuracy.
-- The log file saves these values for review.
+## 12. Explanation
+- Logging saves step-by-step information to `ml.log`.
+- TensorBoard reads the `logs/` folder and shows charts.
+- Prometheus exposes metrics on a web endpoint.
+- This setup helps track model training and monitor metrics.
 
-**Q2: Monitoring system**
-- Logging saves details to a file.
-- TensorBoard shows charts from `logs/`.
-- Prometheus exposes metrics at `http://localhost:8000`.
+## 13. Advantages
+- Makes code behavior visible.
+- Helps debug training loops.
+- Lets you monitor progress in real time.
+- Useful in real ML projects to watch model health.
 
-## 12. Advantages
-- Helps debugging.
-- Tracks performance.
-- Detects issues early.
+## 14. Exam Tips
+- Know the difference between logging and monitoring.
+- Know how to open TensorBoard and Prometheus.
+- Know the commands to install dependencies and run the app.
 
-## 13. Conclusion
-This lab shows how logging and monitoring help with machine learning.
-It makes ML programs easier to understand and fix in real life.
+## 15. Conclusion
+This lab shows how to use logging and monitoring in Python. It makes it easier to understand what happens during model training.

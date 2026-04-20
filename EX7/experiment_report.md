@@ -4,83 +4,103 @@
 Simple TPOT AutoML experiment using the Iris dataset.
 
 ## 2. Objective
-Train a small AutoML model with TPOT on the Iris dataset and see the model accuracy.
+Train a small AutoML model with TPOT on the Iris dataset and check how accurate it is.
 
 ## 3. Prerequisites
 - Python 3.11 installed
-- A working Python virtual environment in `EX7/venv`
+- A working virtual environment in `EX7/venv`
 - Required packages installed from `requirements.txt`
 
-## 4. Description
-This project uses TPOT to automatically find a good machine learning pipeline for the Iris dataset.
-It keeps the settings small so it runs quickly for a lab demonstration.
+## 4. Job Role
+Machine Learning Engineer
 
-## 5. Project structure
+## 5. Theory
+- AutoML helps find the best model automatically.
+- TPOT tests many pipelines and selects the best one.
+- This saves time compared to choosing the model by hand.
+
+## 6. Project Structure
+
 EX7/
 ├── experiment_report.md
 ├── requirements.txt
 ├── run_tpot.py
 └── venv/
 
-## 6. Implementation
-1. Create or activate the virtual environment in `EX7`.
-2. Install the required Python packages.
-3. Run the TPOT script.
-4. Read the output to see the generated model accuracy.
+## 7. Implementation
 
-## 7. Code explanation
-- `load_iris()` loads the Iris dataset from scikit-learn.
-- `train_test_split()` splits the data into training and test sets.
-- `TPOTClassifier()` runs AutoML with:
-  - `generations=2`
-  - `population_size=10`
-  - `verbosity=2`
-  - `random_state=42`
-- `fit()` trains the model.
-- `predict()` makes predictions on the test set.
-- `accuracy_score()` prints how often the model is correct.
+### Step 1: Activate virtual environment
+```bash
+cd "/Users/joeltharakan/Downloads/MLOPS LAB/EX7"
+source venv/bin/activate
+```
 
-## 8. Dependencies
-The script only needs:
+### Step 2: Install dependencies
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+### Step 3: Run the TPOT script
+```bash
+python3 run_tpot.py
+```
+
+### Step 4: Read the output
+- Look for the best pipeline.
+- Check the accuracy on the test set.
+
+## 8. Code explanation
+- `load_iris()` loads the Iris dataset.
+- `train_test_split()` divides data into train and test sets.
+- `TPOTClassifier()` searches for the best model pipeline.
+- `generations` controls how many search rounds are used.
+- `population_size` controls how many pipelines are tested each round.
+- `fit()` runs the AutoML search.
+- `predict()` makes predictions on test data.
+- `accuracy_score()` tells how often predictions are correct.
+
+## 9. Dependencies
 - `tpot`
 - `scikit-learn`
 
-## 9. Commands
+## 10. Commands
 Install dependencies:
 ```bash
 cd "/Users/joeltharakan/Downloads/MLOPS LAB/EX7"
 ./venv/bin/python3 -m pip install -r requirements.txt
 ```
 
-Run the script:
+Run the experiment:
 ```bash
 ./venv/bin/python3 run_tpot.py
 ```
 
-## 10. Expected output
-The script should print:
+## 11. Expected Output
+The script should print messages like:
 - `Starting TPOT...`
 - `Generation 1 - Current best internal CV score: ...`
 - `Generation 2 - Current best internal CV score: ...`
 - `Best pipeline: ...`
 - `TPOT finished. Accuracy on test set: ...`
 
-Example output:
+Example:
 ```text
 Starting TPOT...
-Generation 1 - Current best internal CV score: 0.9583333333333334
-Generation 2 - Current best internal CV score: 0.9583333333333334
+Generation 1 - Current best internal CV score: 0.9583
+Generation 2 - Current best internal CV score: 0.9583
 Best pipeline: KNeighborsClassifier(...)
 TPOT finished. Accuracy on test set: 1.0000
 ```
 
-## 11. What this means
-- TPOT automatically tests simple model options.
-- `generations` is how many rounds of model search TPOT performs.
-- `population_size` is how many candidate pipelines are tried each round.
-- `accuracy` shows how often the model predicted the right Iris species.
+## 12. Results
+- TPOT automatically tests many models.
+- The output shows which pipeline was best.
+- Accuracy tells how good the model is on the test set.
 
-## 12. Notes
-- The code is kept simple for lab use.
-- No extra files are exported in this version.
-- If TPOT prints a warning about package updates, it is safe to ignore for this lab.
+## 13. Exam Notes
+- Know that TPOT is AutoML.
+- Know the meaning of `generations` and `population_size`.
+- Know how to run the script in the virtual environment.
+
+## 14. Conclusion
+This lab shows how to use TPOT to automate model selection on Iris data. It helps compare models and check accuracy quickly.

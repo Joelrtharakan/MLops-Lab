@@ -10,12 +10,13 @@ To learn how to serve a machine learning model with a simple web API.
 - Python installed
 - Basic knowledge of Python scripts
 - Basic understanding of machine learning models
-- Ability to run commands in terminal
+- Ability to run terminal commands
 
 ## 4. Theory
 - Model serving means making a trained model available so other programs can use it.
-- FastAPI is a simple Python library for building web APIs quickly.
-- A `.pkl` file is a saved file that stores a trained model so we can load it later.
+- FastAPI is a Python library for building web APIs quickly.
+- A `.pkl` file stores a trained model so it can be loaded later.
+- The web API receives input, loads the model, and returns predictions.
 
 ## 5. Project Structure
 
@@ -27,31 +28,29 @@ ml-api/
 
 ## 6. Implementation
 
-### Step 1: Create project folder
-- Create a folder named `EX5`.
+### Step 1: Create the project folder
+- Make a folder named `EX5`.
+- Inside it, create `train_model.py`, `app.py`, and `requirements.txt`.
 
-### Step 2: Create files
-- Inside `EX5`, create `train_model.py`, `app.py`, and `requirements.txt`.
+### Step 2: Install dependencies
+- Install the required packages using pip.
 
-### Step 3: Install dependencies
-- Install FastAPI, uvicorn, scikit-learn, and joblib.
+### Step 3: Train and save the model
+- Use the Iris dataset from scikit-learn.
+- Train a `RandomForestClassifier`.
+- Save the model to `model.pkl` with joblib.
 
-### Step 4: Train and save model
-- Use the iris dataset from sklearn.
-- Train a simple model.
-- Save the model to `model.pkl` using joblib.
+### Step 4: Create the FastAPI app
+- Load the saved model in `app.py`.
+- Create a FastAPI application.
+- Add a `/predict` endpoint that accepts feature values.
+- Return the prediction as JSON.
 
-### Step 5: Create FastAPI app
-- Load the saved model.
-- Create a FastAPI app.
-- Add one endpoint at `/predict`.
-- Accept feature values and return the prediction.
+### Step 5: Run the server
+- Start the FastAPI server with uvicorn.
+- Open the browser or use an API client to send requests.
 
-### Step 6: Run server
-- Start the server with uvicorn.
-- Open the browser to use the API.
-
-## Code
+## 7. Code Example
 
 ### train_model.py
 ```python
@@ -104,41 +103,47 @@ joblib
 numpy
 ```
 
-## 7. Commands Section
+## 8. Commands Section
 
 Install dependencies:
 ```bash
-pip install fastapi uvicorn scikit-learn joblib python-multipart
+pip install -r requirements.txt
 ```
 
-Train model:
+Train the model:
 ```bash
 python train_model.py
 ```
 
-Run server:
+Run the server:
 ```bash
 uvicorn app:app --reload
 ```
 
-## 8. Output
-- Model trained and saved as `model.pkl`.
-- Server runs at `http://127.0.0.1:8000`.
-- API docs available at `http://127.0.0.1:8000/docs`.
+## 9. Output
+- `train_model.py` prints `Model trained and saved!`.
+- The FastAPI server runs at `http://127.0.0.1:8000`.
+- API docs are available at `http://127.0.0.1:8000/docs`.
 
-## 9. Example API Usage
-- Input values:
-  - sepal_length: 5.1
-  - sepal_width: 3.5
-  - petal_length: 1.4
-  - petal_width: 0.2
-- Output prediction:
-  - `{'prediction': 0}`
+## 10. Example API Usage
+Send a POST request to `/predict` with JSON body:
+```json
+{"features": [5.1, 3.5, 1.4, 0.2]}
+```
+Expected response:
+```json
+{"prediction": 0}
+```
 
-## 10. Advantages
-- Easy deployment
-- Real-time prediction
-- Lightweight API
+## 11. Advantages
+- Easy deployment for real-time prediction.
+- The model can be used by other programs.
+- FastAPI is simple and fast.
 
-## 11. Conclusion
-This lab shows how to serve a trained ML model with FastAPI. It makes the model available over HTTP so other programs can use it.
+## 12. Exam Tips
+- Know how the model is loaded from `model.pkl`.
+- Know that `/predict` returns JSON.
+- Remember to install requirements before running the app.
+
+## 13. Conclusion
+This lab shows how to serve a machine learning model with FastAPI. It makes predictions available over HTTP so other programs can use the model.

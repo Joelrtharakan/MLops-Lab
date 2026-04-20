@@ -4,7 +4,7 @@
 Configuring Continuous Integration with GitHub Actions
 
 ## 2. Aim
-To learn how to make GitHub run tests automatically using GitHub Actions.
+To learn how to make GitHub run tests automatically when code changes.
 
 ## 3. Prerequisites
 - A computer with Python installed
@@ -13,15 +13,25 @@ To learn how to make GitHub run tests automatically using GitHub Actions.
 - Basic knowledge of files and folders
 
 ## 4. Theory
-Continuous Integration (CI) means code is tested automatically when it is changed. GitHub Actions is a tool that can run tests when you push code to GitHub. This is useful because tests can run by themselves and show if the code is okay.
+Continuous Integration (CI) means code is tested automatically when it changes. GitHub Actions is a tool that runs these tests in the cloud. This helps catch mistakes early and keeps code working when many people work together.
 
-## 5. Implementation
+## 5. Project Structure
+
+CI-project/
+│
+├── app.py
+├── test_app.py
+├── requirements.txt
+└── .github/
+    └── workflows/
+        └── ci.yml
+
+## 6. Implementation
 
 ### Step 1: Create GitHub repository
-- Go to GitHub website.
-- Click on "New repository".
+- Open GitHub in a browser.
+- Click "New repository".
 - Give the repository a name.
-- Choose public or private.
 - Click "Create repository".
 
 ### Step 2: Clone repository
@@ -29,21 +39,21 @@ Continuous Integration (CI) means code is tested automatically when it is change
 - Run this command:
 
 ```bash
-git clone git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/your-username/your-repo-name.git
 ```
 
-### Step 3: Create Python file (app.py)
-- In the repository folder, create a file named `app.py`.
-- Put this code:
+### Step 3: Create Python file (`app.py`)
+- Create `app.py` in the repository.
+- Add this simple code:
 
 ```python
 # app.py
 print("CI Lab Working")
 ```
 
-### Step 4: Create test file (test_app.py using pytest)
-- Create a file named `test_app.py`.
-- Put this code:
+### Step 4: Create test file (`test_app.py`)
+- Create `test_app.py`.
+- Add a simple test with pytest:
 
 ```python
 # test_app.py
@@ -52,23 +62,19 @@ def test_ci():
     assert True
 ```
 
-### Step 5: Create requirements.txt
-- Create a file named `requirements.txt`.
-- Put this text:
+### Step 5: Create `requirements.txt`
+- Add this line:
 
 ```text
 pytest
 ```
 
-### Step 6: Create .github/workflows folder
-- In the repository folder, make a folder named `.github`.
-- Inside `.github`, make another folder named `workflows`.
+### Step 6: Create GitHub Actions workflow
+- Make folders: `.github/workflows`.
+- Create `ci.yml` inside that folder.
+- Add the workflow content below.
 
-### Step 7: Create ci.yml file
-- Inside `.github/workflows`, create a file named `ci.yml`.
-- Put the workflow code there.
-
-## 6. GitHub Actions Workflow File
+## 7. GitHub Actions Workflow File
 
 This is the exact workflow file content:
 
@@ -96,7 +102,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
@@ -105,26 +111,47 @@ jobs:
 ```
 
 ### Explain each part in simple terms
-- `name`: The name of this workflow.
-- `on`: When the workflow should run.
-  - `push`: Run when code is pushed.
-  - `pull_request`: Run when a pull request is opened.
-- `jobs`: The list of tasks to run.
-- `runs-on`: The computer type used to run the job.
-- `steps`: The actions inside the job.
+- `name`: The workflow name.
+- `on`: When the workflow runs.
+  - `push`: when code is pushed to GitHub.
+  - `pull_request`: when someone opens a pull request.
+- `jobs`: The tasks the workflow does.
+- `runs-on`: The virtual machine used for testing.
+- `steps`: Each action in the workflow.
+- `uses: actions/checkout@v3`: Get the repository code.
+- `uses: actions/setup-python@v4`: Install Python.
+- `pip install -r requirements.txt`: Install the test library.
+- `pytest`: Run the tests.
 
-## 7. Git Commands Section
+## 8. Commands Section
 
-Use these commands to save and send your code to GitHub:
+Install dependencies locally:
+```bash
+python -m pip install -r requirements.txt
+```
 
+Run the test locally:
+```bash
+pytest
+```
+
+Save and push changes to GitHub:
 ```bash
 git add .
-git commit -m "Configured CI"
+git commit -m "Add CI workflow"
 git push
 ```
 
-## 8. Output / Result
-After pushing, GitHub starts the workflow automatically. The tests run on GitHub. If everything passes, you see a green tick on GitHub.
+## 9. Output / Result
+- On GitHub, the workflow starts automatically.
+- The test result shows pass or fail.
+- A green check mark means the workflow passed.
 
-## 9. Conclusion
-This lab shows how to set up a simple CI workflow with GitHub Actions. It makes tests run automatically and helps keep code working.
+## 10. Notes for Exam
+- Know what CI means.
+- Know that GitHub Actions runs workflow files in `.github/workflows`.
+- Know the difference between `push` and `pull_request`.
+- Know that `pytest` is a test tool.
+
+## 11. Conclusion
+This lab shows how to set up CI with GitHub Actions. It keeps code tested automatically and helps developers find errors early.

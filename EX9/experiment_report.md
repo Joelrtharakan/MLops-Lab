@@ -7,17 +7,17 @@ Machine Learning Interoperability with ONNX
 Learn how to convert a simple machine learning model to ONNX and run it using ONNX Runtime.
 
 ## 3. Job Role
-Machine Learning Engineer / Data Science student.
+Machine Learning Engineer / Data Science student
 
 ## 4. Skills Required
-- Python basics: write and run code.
-- Machine learning: use a simple model.
-- ONNX: convert and run a saved model.
+- Python basics: write and run code
+- Machine learning: use a simple model
+- ONNX: convert and run a saved model
 
 ## 5. Prerequisites
-- Python installed.
-- Basic terminal use.
-- Basic understanding of a model training script.
+- Python installed
+- Basic terminal use
+- Basic understanding of a model training script
 
 ## 6. Theory
 - Interoperability means different tools can use the same model.
@@ -31,7 +31,7 @@ Machine Learning Engineer / Data Science student.
 ### Step 1: Install libraries
 Install the required libraries:
 ```bash
-pip install scikit-learn onnxruntime skl2onnx
+pip install -r requirements.txt
 ```
 
 ### Step 2: Create a simple ML model
@@ -94,12 +94,7 @@ print('Actual:', y_test[0])
 ```
 
 ## 9. Commands Section
-Install dependencies with pip:
-```bash
-pip install scikit-learn onnxruntime skl2onnx
-```
-
-Or install from `requirements.txt`:
+Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
@@ -118,16 +113,21 @@ Expected output:
 ## 11. Explanation of Result
 - The ONNX model gives the same kind of prediction as the original model.
 - Interoperability means the model can work in different tools.
+- This lab shows how to move a model from training to inference.
 
 ## 12. Advantages
-- Model portability.
-- Framework independent.
-- Easy deployment.
+- Model portability
+- Framework independent
+- Easy deployment
 
 ## 13. Limitations
-- Conversion can fail for complex models.
-- Some operations are not supported in ONNX.
+- Conversion can fail for complex models
+- Some operations are not supported in ONNX
 
-## 14. Conclusion
-ONNX helps reuse models across platforms.
-It makes machine learning models easier to move from training to production.
+## 14. Exam Notes
+- Know the difference between training and inference.
+- Know why ONNX saves a model to a file.
+- Know how to load `model.onnx` with ONNX Runtime.
+
+## 15. Conclusion
+ONNX helps reuse models across platforms. It makes machine learning models easier to move from training to production.
