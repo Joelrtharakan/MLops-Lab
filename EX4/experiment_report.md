@@ -69,61 +69,60 @@ Features:
 ## 9. Implementation Code
 
 ```python
-import matplotlib.pyplot as plt
+# Import libraries
 from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.inspection import permutation_importance
-from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
-# Load the iris dataset
+# Load dataset
 iris = load_iris()
 X = iris.data
 y = iris.target
-feature_names = iris.feature_names
+features = iris.feature_names
 
-# Split the data into training and testing sets
+# Print features
+print("Features used:")
+for f in features:
+    print("-", f)
+
+# Split data (with random_state)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42
 )
 
-# Train a random forest model
+# Train model (with random_state)
 model = RandomForestClassifier(random_state=42)
 model.fit(X_train, y_train)
 
-# Calculate baseline accuracy
-baseline_accuracy = model.score(X_test, y_test)
-print(f"Baseline Accuracy: {baseline_accuracy:.3f}")
+# Baseline accuracy
+acc = model.score(X_test, y_test)
+print("\nBaseline Accuracy:", acc)
 
-# Apply Permutation Feature Importance
-pfi_result = permutation_importance(
-    model, X_test, y_test, n_repeats=10, random_state=42
+# Permutation Importance (with random_state)
+result = permutation_importance(
+    model, X_test, y_test, random_state=42
 )
 
-# Sort features by importance
-feature_importance = sorted(
-    zip(feature_names, pfi_result.importances_mean),
-    key=lambda x: x[1],
-    reverse=True,
-)
+# Print importance
+print("\nFeature Importance:")
+for i in range(len(features)):
+    print(features[i], "->", result.importances_mean[i])
 
-print("Permutation Feature Importance Results:")
-for name, importance in feature_importance:
-    print(f"{name} -> {importance:.3f}")
-
-# Plot the importance values
-names = [name for name, _ in feature_importance]
-values = [importance for _, importance in feature_importance]
-plt.figure(figsize=(8, 4))
-plt.barh(names, values, color='skyblue')
-plt.gca().invert_yaxis()
-plt.title('Permutation Feature Importance (Random Forest - Iris)')
-plt.xlabel('Mean Decrease in Accuracy')
-plt.ylabel('Feature')
-plt.tight_layout()
+# Plot
+plt.barh(features, result.importances_mean)
+plt.xlabel("Importance")
+plt.ylabel("Features")
+plt.title("Permutation Feature Importance")
 plt.show()
 
-print(f"Most Important Feature: {feature_importance[0][0]}")
-print(f"Least Important Feature: {feature_importance[-1][0]}")
+# Most & least important
+most = features[result.importances_mean.argmax()]
+least = features[result.importances_mean.argmin()]
+
+print("\nMost Important Feature:", most)
+print("Least Important Feature:", least)
 ```
 
 ## 10. Commands Section
@@ -139,20 +138,24 @@ python3 ex4_pfi.py
 ```
 
 ## 11. Output
-- A baseline accuracy value is printed.
-- A list of feature importance values is printed.
-- A bar chart of feature importance appears.
+- The feature names are printed.
+- The baseline accuracy value is printed.
+- Feature importance values are printed in the original feature order.
+- A horizontal bar chart of feature importance appears.
 - The most important and least important feature are shown.
 
 ## 12. Result Analysis
-- Petal length and petal width are usually the most important features.
-- Sepal length and sepal width are less important.
-- The larger the importance number, the more the feature matters.
+- The code shows which features change model accuracy most when shuffled.
+- Petal length and petal width are often the most important features.
+- Sepal length and sepal width are usually less important.
+- The feature with the highest importance mean is the most important.
+- The feature with the lowest importance mean is the least important.
 
 ## 13. Exam Notes
 - Know what Permutation Feature Importance means.
-- Know how shuffling a feature tests its importance.
+- Know how the code prints feature names and importance values.
 - Know why baseline accuracy is needed.
+- Remember the script uses `result.importances_mean` and `argmax` / `argmin`.
 
 ## 14. Conclusion
 This lab shows how to use Permutation Feature Importance to explain a model. It makes the most important features easy to find.
