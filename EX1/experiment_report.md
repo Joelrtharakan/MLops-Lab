@@ -36,7 +36,7 @@ The factorial of a number is the product of all whole numbers from 1 up to that 
 
 def factorial(n):
     if n < 0:
-        return "Error: negative input"
+        return "Error"
     result = 1
     for i in range(1, n + 1):
         result = result * i
@@ -44,7 +44,7 @@ def factorial(n):
 ```
 
 **Why it works:**
-- If n is negative, return an error message.
+- If n is negative, return the string `Error`.
 - Start with 1 and multiply by every number up to n.
 - Return the final result.
 
@@ -54,13 +54,13 @@ def factorial(n):
 |---|---|---|---|
 | Positive number | 5 | 120 | Pass |
 | Zero | 0 | 1 | Pass |
-| Negative number | -3 | Error: negative input | Pass |
+| Negative number | -3 | Error | Error | Pass |
 
 **Sample outputs:**
 ```text
 factorial(5) -> 120
 factorial(0) -> 1
-factorial(-3) -> Error: negative input
+factorial(-3) -> Error
 ```
 
 ---
@@ -159,16 +159,14 @@ Sorting means putting numbers in order from smallest to largest. The function sh
 ```python
 # Sort a list in ascending order
 
-def simple_sort(numbers):
-    sorted_numbers = numbers[:]  # copy list to avoid changing original
-    sorted_numbers.sort()
-    return sorted_numbers
+def simple_sort(lst):
+    return sorted(lst)
 ```
 
 **Why it works:**
-- Copy the list so the original does not change.
-- Use Python's built-in `sort()` method.
-- Return the sorted list.
+- Python's built-in `sorted()` function returns a new sorted list.
+- The original list is not changed.
+- Return the sorted result.
 
 **Test cases:**
 
@@ -235,6 +233,8 @@ Run this file in a terminal:
 ```bash
 python ex1_tests.py
 ```
+
+The file prints the result of each test directly.
 
 ## 9. Result
 This experiment shows how simple functions and clear test cases help find correct behavior. Each problem uses normal checks and edge cases to make sure the code works well.
