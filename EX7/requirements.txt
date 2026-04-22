@@ -1,0 +1,2 @@
+tpot==0.12.2
+scikit-learn==1.4.1.post1
