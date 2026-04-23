@@ -7,22 +7,21 @@ from joblib import dump
 
 # Load dataset
 data = load_wine()
-X = data.data
-y = data.target
+x, y = data.data, data.target
 
 # Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
 # Train models
-model1 = LogisticRegression(max_iter=1000)
+model1 = LogisticRegression()
 model2 = DecisionTreeClassifier()
 
-model1.fit(X_train, y_train)
-model2.fit(X_train, y_train)
+model1.fit(x_train, y_train)
+model2.fit(x_train, y_train)
 
 # Predict
-pred1 = model1.predict(X_test)
-pred2 = model2.predict(X_test)
+pred1 = model1.predict(x_test)
+pred2 = model2.predict(x_test)
 
 # Evaluation (only Accuracy & F1)
 print("Logistic Accuracy:", accuracy_score(y_test, pred1))

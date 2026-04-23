@@ -4,12 +4,11 @@ from joblib import dump, load
 
 # Load dataset
 data = load_iris()
-X = data.data
-y = data.target
+x, y = data.data, data.target
 
 # Train model
 model = DecisionTreeClassifier()
-model.fit(X, y)
+model.fit(x, y)
 
 # Save model
 dump(model, "iris_api_model.pkl")
@@ -18,4 +17,4 @@ dump(model, "iris_api_model.pkl")
 loaded_model = load("iris_api_model.pkl")
 
 # Test prediction
-print("Prediction:", loaded_model.predict([X[0]]))
+print("Prediction:", loaded_model.predict([x[0]]))

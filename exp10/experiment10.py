@@ -6,18 +6,17 @@ from joblib import dump
 
 # Load dataset (same style)
 data = load_digits()
-X = data.data
-y = data.target
+x, y = data.data, data.target
 
 # Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
 # Train model
-model = MLPClassifier(max_iter=300)
-model.fit(X_train, y_train)
+model = MLPClassifier()
+model.fit(x_train, y_train)
 
 # Predict
-y_pred = model.predict(X_test)
+y_pred = model.predict(x_test)
 
 # Evaluation
 print("Accuracy:", accuracy_score(y_test, y_pred))
