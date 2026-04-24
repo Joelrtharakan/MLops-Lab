@@ -18,7 +18,7 @@ print("MAE:", mean_absolute_error(y_test, y_pred))
 print("MSE:", mean_squared_error(y_test, y_pred))
 print("RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
 
-new_data = [x_test[0]]
-print("Prediction:", model.predict(new_data))
+
+print("Prediction:", model.predict([x_test[0]]))
 
 dump(model, "linear_regression_diabetes.pkl")
